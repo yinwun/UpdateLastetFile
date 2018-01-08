@@ -1,0 +1,181 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace UpdateFiles
+{
+    public class IniPorperties
+    {
+        #region ini
+        const string iniSection = "ini";
+        const string ini_path = "path";
+        const string ini_update = "update";
+        #endregion
+
+        #region OS
+        const string osSection = "OS";
+        const string os_type = "type";
+        #endregion
+
+        #region HOST
+        const string hostSection = "HOST";
+        const string host_identify = "identify";
+        #endregion
+
+        #region XP Path
+        const string xpPathSection = "XP_PATH";
+        const string xpLocalPath_home = "local_home";
+        const string xpnetPath_home = "net_home";
+        #endregion
+
+        #region W7 Path
+        const string w7PathSection = "W7_PATH";
+        const string w7LocalPath_home = "local_home";
+        const string w7netPath_home = "net_home";
+        #endregion
+
+        #region XP PC Spec
+        const string xpPCSpecSection = "XP_PC_SPEC";
+        #endregion
+
+        #region W7 PC Spec
+        const string w7PCSpecSection = "W7_PC_SPEC";
+        #endregion
+
+        private string _iniLocalPath;
+        public string IniLocalPath
+        {
+            get
+            {
+                _iniLocalPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Configuration.ini");
+                return _iniPath;
+            }
+        }
+
+
+        private string _iniPath;
+
+        public string IniPath
+        {
+            get {
+                _iniPath = INIOperationClass.INIGetStringValue(IniLocalPath, iniSection, ini_path, String.Empty);
+                return _iniPath;
+            }
+        }
+
+        /*
+         * Blank no update
+         * w7, win7 update
+         * XP, xp update 
+         * w7xp, both update
+         */
+        private string _iniUpdate;
+
+        public string IniUpdate
+        {
+            get
+            {
+                _iniUpdate = INIOperationClass.INIGetStringValue(IniLocalPath, iniSection, ini_update, String.Empty);
+                return _iniUpdate;
+            }
+        }
+
+        private string _os;
+        public string OS
+        {
+            get
+            {
+                _os = INIOperationClass.INIGetStringValue(IniLocalPath, osSection, os_type, String.Empty);
+                return _os;
+            }
+        }
+
+        private string _host;
+        public string HOST
+        {
+            get
+            {
+                _host = INIOperationClass.INIGetStringValue(IniLocalPath, hostSection, host_identify, String.Empty);
+                return _host;
+            }
+        }
+
+        private string _xplocalpathhome;
+        public string XPLOCALPATHHOME
+        {
+            get
+            {
+                _xplocalpathhome = INIOperationClass.INIGetStringValue(IniLocalPath, xpPathSection, xpLocalPath_home, String.Empty);
+                return _xplocalpathhome;
+            }
+        }
+
+        private string _xpnetpathhome;
+        public string XPNETPATHHOME
+        {
+            get
+            {
+                _xpnetpathhome = INIOperationClass.INIGetStringValue(IniLocalPath, xpPathSection, xpnetPath_home, String.Empty);
+                return _xpnetpathhome;
+            }
+        }
+
+        private string _w7localpathhome;
+        public string W7LOCALPATHHOME
+        {
+            get
+            {
+                _w7localpathhome = INIOperationClass.INIGetStringValue(IniLocalPath, w7PathSection, w7LocalPath_home, String.Empty);
+                return _w7localpathhome;
+            }
+        }
+
+        private string _w7netpathhome;
+        public string W7NETPATHHOME
+        {
+            get
+            {
+                _w7netpathhome = INIOperationClass.INIGetStringValue(IniLocalPath, w7PathSection, w7netPath_home, String.Empty);
+                return _w7netpathhome;
+            }
+        }
+
+        private Dictionary<string, string> _xppcspecdict;
+
+        public Dictionary<string, string> ListXPSPECDICT
+        {
+            get
+            {
+                string[] strs = INIOperationClass.INIGetAllItemKeys(IniLocalPath, xpPCSpecSection);
+                foreach (string s in strs)
+                {
+                    string strValue = INIOperationClass.INIGetStringValue(IniLocalPath, xpPCSpecSection, s, String.Empty);
+                    _xppcspecdict.Add(s, strValue);
+                }
+
+                return _xppcspecdict;
+            }
+        }
+
+        private Dictionary<string, string> _w7pcspecdict;
+
+        public Dictionary<string, string> ListW7SPECDICT
+        {
+            get
+            {
+                string[] strs = INIOperationClass.INIGetAllItemKeys(IniLocalPath, w7PCSpecSection);
+                foreach (string s in strs)
+                {
+                    string strValue = INIOperationClass.INIGetStringValue(IniLocalPath, w7PCSpecSection, s, String.Empty);
+                    _w7pcspecdict.Add(s, strValue);
+                }
+
+                return _w7pcspecdict;
+            }
+        }
+
+    }
+}
