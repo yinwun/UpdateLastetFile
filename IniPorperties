@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace UpdateFiles
 {
@@ -72,8 +70,9 @@ namespace UpdateFiles
 
         public string IniNetPathFile
         {
-            get {
-                _ininetPathFile = Path.Combine(INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_netpath, String.Empty), "Configuration.ini") ;
+            get
+            {
+                _ininetPathFile = Path.Combine(INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_netpath, String.Empty), "Configuration.ini");
                 return _ininetPathFile;
             }
         }
@@ -101,7 +100,7 @@ namespace UpdateFiles
         {
             get
             {
-                _iniUpdate = INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_update, String.Empty);
+                _iniUpdate = INIOperationClass.INIGetStringValue(IniNetPathFile, iniSection, ini_update, String.Empty);
                 return _iniUpdate;
             }
         }
