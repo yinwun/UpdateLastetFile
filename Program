@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace UpdateFiles
@@ -23,24 +21,27 @@ namespace UpdateFiles
             IniPorperties ini = new IniPorperties();
             if (ini.IniType.Equals("1"))
             {
-                WatcherStrat(ini.IniXZLog, "*Log.txt*");
+                WatcherStrat(ini.IniXZLog, "Log.txt");
             }
             else if (ini.IniType.Equals("2"))
             {
-                WatcherStrat(ini.IniNetPath, "Configuration.ini");
+                //Console.WriteLine("{0}", ini.IniNetPath);
+                //WatcherStrat(ini.IniNetPath, "Configuration.ini");
+                bool isUpdate = CheckINIVersion();
+                if (isUpdate) UpdateLastestFiles();
             }
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         #region Watch File
 
         private static void WatcherStrat(string path, string filter)
         {
-
+            Console.WriteLine("{0}{1}", path, filter);
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = path;
-            watcher.Filter = filter;
+            watcher.Filter = "*";
             watcher.Changed += new FileSystemEventHandler(OnProcess);
             watcher.Created += new FileSystemEventHandler(OnProcess);
             watcher.Deleted += new FileSystemEventHandler(OnProcess);
@@ -72,12 +73,12 @@ namespace UpdateFiles
         }
         private static void OnChanged(object source, FileSystemEventArgs e)
         {
-            //Console.WriteLine("文件改变事件处理逻辑{0}  {1}  {2}", e.ChangeType, e.FullPath, e.Name);
+            Console.WriteLine("文件改变事件处理逻辑{0}  {1}  {2}", e.ChangeType, e.FullPath, e.Name);
             IniPorperties ini = new IniPorperties();
             if (ini.IniType.Equals("1"))
             {
                 //WatcherStrat(@"C:\Working\Test", "*Log.txt*");
-                 Console.WriteLine("文件改变事件处理逻辑{0}  {1}  {2}", e.ChangeType, e.FullPath, e.Name);
+                Console.WriteLine("文件改变事件处理逻辑{0}  {1}  {2}", e.ChangeType, e.FullPath, e.Name);
             }
             else if (ini.IniType.Equals("2"))
             {
@@ -124,6 +125,7 @@ namespace UpdateFiles
         {
             bool isUpdate = false;
             IniPorperties ini = new IniPorperties();
+            Console.WriteLine("{0}", ini.IniUpdate);
             if (ini.IniUpdate.Equals("1"))
             {
                 File.Copy(ini.IniNetPathFile, ini.IniLocalPathFile, true);
@@ -132,7 +134,7 @@ namespace UpdateFiles
 
             return isUpdate;
         }
-    
+
         internal static void HandleXP()
         {
             IniPorperties ini = new IniPorperties();
