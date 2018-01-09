@@ -1,16 +1,18 @@
 [ini]
-PATH=
-update=
+type=2
+netpath=C:\Working\Test\NET_INI
+update=1
+xzlog=
 
 [OS]
-type=XP
+type=xp
 
 [HOST]
-identify=C:\Common\HOST.txt
+identify=C:\Working\Test\Common\HOST.txt
 
 [XP_PATH]
-local_home=
-net_home
+local_home=C:\Working\Test\Local_NW
+net_home=C:\Working\Test\NET_NW
 
 [XP_PC_SPEC]
 PC1=PC1
@@ -25,8 +27,8 @@ PC9=PC9
 PCA=PCA
 
 [W7_PATH]
-local_home=
-net_home
+local_home=C:\Working\Test\LOCAL_DP
+net_home=C:\Working\Test\NET_DP
 
 [W7_PC_SPEC]
 PC1=PC1
