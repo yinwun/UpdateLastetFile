@@ -11,8 +11,10 @@ namespace UpdateFiles
     {
         #region ini
         const string iniSection = "ini";
-        const string ini_path = "path";
+        const string ini_netpath = "netpath";
         const string ini_update = "update";
+        const string ini_type = "type";
+        const string ini_xzlog = "xzlog";
         #endregion
 
         #region OS
@@ -45,24 +47,45 @@ namespace UpdateFiles
         const string w7PCSpecSection = "W7_PC_SPEC";
         #endregion
 
-        private string _iniLocalPath;
-        public string IniLocalPath
+        private string _iniLocalPathFile;
+        public string IniLocalPathFile
         {
             get
             {
-                _iniLocalPath = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Configuration.ini");
-                return _iniPath;
+                _iniLocalPathFile = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Configuration.ini");
+                return _iniLocalPathFile;
             }
         }
 
+        private string _ininetPath;
 
-        private string _iniPath;
+        public string IniNetPath
+        {
+            get
+            {
+                _ininetPath = INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_netpath, String.Empty);
+                return _ininetPath;
+            }
+        }
 
-        public string IniPath
+        private string _ininetPathFile;
+
+        public string IniNetPathFile
         {
             get {
-                _iniPath = INIOperationClass.INIGetStringValue(IniLocalPath, iniSection, ini_path, String.Empty);
-                return _iniPath;
+                _ininetPathFile = Path.Combine(INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_netpath, String.Empty), "Configuration.ini") ;
+                return _ininetPathFile;
+            }
+        }
+
+        private string _iniType;
+
+        public string IniType
+        {
+            get
+            {
+                _iniType = INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_type, String.Empty);
+                return _iniType;
             }
         }
 
@@ -78,8 +101,20 @@ namespace UpdateFiles
         {
             get
             {
-                _iniUpdate = INIOperationClass.INIGetStringValue(IniLocalPath, iniSection, ini_update, String.Empty);
+                _iniUpdate = INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_update, String.Empty);
                 return _iniUpdate;
+            }
+        }
+
+
+        private string _inixzlog;
+
+        public string IniXZLog
+        {
+            get
+            {
+                _inixzlog = INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_xzlog, String.Empty);
+                return _inixzlog;
             }
         }
 
@@ -88,7 +123,7 @@ namespace UpdateFiles
         {
             get
             {
-                _os = INIOperationClass.INIGetStringValue(IniLocalPath, osSection, os_type, String.Empty);
+                _os = INIOperationClass.INIGetStringValue(IniLocalPathFile, osSection, os_type, String.Empty);
                 return _os;
             }
         }
@@ -98,7 +133,7 @@ namespace UpdateFiles
         {
             get
             {
-                _host = INIOperationClass.INIGetStringValue(IniLocalPath, hostSection, host_identify, String.Empty);
+                _host = INIOperationClass.INIGetStringValue(IniLocalPathFile, hostSection, host_identify, String.Empty);
                 return _host;
             }
         }
@@ -108,7 +143,7 @@ namespace UpdateFiles
         {
             get
             {
-                _xplocalpathhome = INIOperationClass.INIGetStringValue(IniLocalPath, xpPathSection, xpLocalPath_home, String.Empty);
+                _xplocalpathhome = INIOperationClass.INIGetStringValue(IniLocalPathFile, xpPathSection, xpLocalPath_home, String.Empty);
                 return _xplocalpathhome;
             }
         }
@@ -118,7 +153,7 @@ namespace UpdateFiles
         {
             get
             {
-                _xpnetpathhome = INIOperationClass.INIGetStringValue(IniLocalPath, xpPathSection, xpnetPath_home, String.Empty);
+                _xpnetpathhome = INIOperationClass.INIGetStringValue(IniLocalPathFile, xpPathSection, xpnetPath_home, String.Empty);
                 return _xpnetpathhome;
             }
         }
@@ -128,7 +163,7 @@ namespace UpdateFiles
         {
             get
             {
-                _w7localpathhome = INIOperationClass.INIGetStringValue(IniLocalPath, w7PathSection, w7LocalPath_home, String.Empty);
+                _w7localpathhome = INIOperationClass.INIGetStringValue(IniLocalPathFile, w7PathSection, w7LocalPath_home, String.Empty);
                 return _w7localpathhome;
             }
         }
@@ -138,7 +173,7 @@ namespace UpdateFiles
         {
             get
             {
-                _w7netpathhome = INIOperationClass.INIGetStringValue(IniLocalPath, w7PathSection, w7netPath_home, String.Empty);
+                _w7netpathhome = INIOperationClass.INIGetStringValue(IniLocalPathFile, w7PathSection, w7netPath_home, String.Empty);
                 return _w7netpathhome;
             }
         }
@@ -149,10 +184,11 @@ namespace UpdateFiles
         {
             get
             {
-                string[] strs = INIOperationClass.INIGetAllItemKeys(IniLocalPath, xpPCSpecSection);
+                string[] strs = INIOperationClass.INIGetAllItemKeys(IniLocalPathFile, xpPCSpecSection);
+                _xppcspecdict = new Dictionary<string, string>();
                 foreach (string s in strs)
                 {
-                    string strValue = INIOperationClass.INIGetStringValue(IniLocalPath, xpPCSpecSection, s, String.Empty);
+                    string strValue = INIOperationClass.INIGetStringValue(IniLocalPathFile, xpPCSpecSection, s, String.Empty);
                     _xppcspecdict.Add(s, strValue);
                 }
 
@@ -166,10 +202,11 @@ namespace UpdateFiles
         {
             get
             {
-                string[] strs = INIOperationClass.INIGetAllItemKeys(IniLocalPath, w7PCSpecSection);
+                _w7pcspecdict = new Dictionary<string, string>();
+                string[] strs = INIOperationClass.INIGetAllItemKeys(IniLocalPathFile, w7PCSpecSection);
                 foreach (string s in strs)
                 {
-                    string strValue = INIOperationClass.INIGetStringValue(IniLocalPath, w7PCSpecSection, s, String.Empty);
+                    string strValue = INIOperationClass.INIGetStringValue(IniLocalPathFile, w7PCSpecSection, s, String.Empty);
                     _w7pcspecdict.Add(s, strValue);
                 }
 
