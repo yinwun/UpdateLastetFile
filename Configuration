@@ -3,6 +3,7 @@ type=2
 netpath=C:\Working\Test\NET_INI
 update=1
 xzlog=
+account=C:\Working\Test\NET_ACCOUNT
 
 [OS]
 type=xp
