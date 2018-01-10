@@ -13,6 +13,7 @@ namespace UpdateFiles
         const string ini_update = "update";
         const string ini_type = "type";
         const string ini_xzlog = "xzlog";
+        const string ini_account = "account";
         #endregion
 
         #region OS
@@ -52,6 +53,17 @@ namespace UpdateFiles
             {
                 _iniLocalPathFile = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Configuration.ini");
                 return _iniLocalPathFile;
+            }
+        }
+        
+         private string _ininetAccountPath;
+
+        public string IniNetAccountPath
+        {
+            get
+            {
+                _ininetAccountPath = INIOperationClass.INIGetStringValue(IniLocalPathFile, iniSection, ini_account, String.Empty);
+                return _ininetAccountPath;
             }
         }
 
